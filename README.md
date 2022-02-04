@@ -1,6 +1,8 @@
-REST API testing in CodeceptJS 3.3
+## REST API testing in CodeceptJS 3.3
 
 Testing responses of https://swapi.dev
+
+* [starwats_test](https://github.com/codeceptjs/api-examples/blob/main/star_wars_test.js)
 
 ## How to run tests
 
