@@ -2,7 +2,7 @@
 
 Testing responses of https://swapi.dev
 
-* [starwats_test](https://github.com/codeceptjs/api-examples/blob/main/star_wars_test.js)
+* [starwars_test](https://github.com/codeceptjs/api-examples/blob/main/star_wars_test.js)
 
 ## How to run tests
 
