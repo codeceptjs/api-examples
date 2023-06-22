@@ -1,43 +1,84 @@
 const joi = require('joi');
 
-Feature('Star Wars');
+Feature('Survey Management APIs');
 
-const characterSchema = joi.object({
-  films: joi.array(),
-  gender: joi.string(),
-  hair_color: joi.string(),
-  height: joi.string(),
-  mass: joi.string(),
-  name: joi.string(),
-  skin_color: joi.string(),
-  created: joi.date()
+const surveySchema = joi.object({
+  data:joi.object({
+    surveyId: joi.string(),
+    surveyId: joi.string(), // string
+    surveyUrl: joi.string(), // string
+    numOfRespondents: joi.number(), // integer
+    maxCredits: joi.number(), // integer
+    createdDate: joi.string(), // string 
+    startDate: joi.string(), // string 
+    expiryDate: joi.string(), // string 
+    isActive: joi.boolean(), // boolean
+    surveyTime: joi.number(), // integer
+    surveyTimeUnit: joi.string(), // string
+    surveyTitle: joi.string(), // string
+    description: joi.string(), // string
+    studentsCriteria: joi.object(),
+    devices: joi.object(),
+    parameters: joi.object()}),
+    message: joi.string(), // string
+    status: joi.number(),
+    completionCode:joi.string()
 }).unknown();
 
-Scenario('get all characters', ({ I }) => {
-  I.sendGetRequest('/people');
-  I.seeResponseCodeIsSuccessful();
-  I.seeResponseContainsKeys(['count', 'results']);
-  I.seeResponseMatchesJsonSchema(joi => {
-    return joi.object({
-      count: joi.number(),
-      previous: joi.string().uri().allow(null),
-      next: joi.string().uri().optional().allow(null),
-      results: joi.array().items(characterSchema),
-    });
+const allSurveySchema = joi.object({
+  data:joi.object({
+    surveyId: joi.string(),
+    surveyId: joi.string(), // string
+    surveyUrl: joi.string(), // string
+    numOfRespondents: joi.number(), // integer
+    maxCredits: joi.number(), // integer
+    createdDate: joi.string(), // string 
+    startDate: joi.string(), // string 
+    expiryDate: joi.string(), // string 
+    isActive: joi.boolean(), // boolean
+    surveyTime: joi.number(), // integer
+    surveyTimeUnit: joi.string(), // string
+    surveyTitle: joi.string(), // string
+    description: joi.string(), // string
+    studentsCriteria: joi.object(),
+    devices: joi.object(),
+    parameters: joi.object()}),
+    message: joi.string(), // string
+    status: joi.number() 
+}).unknown();
+
+const surveyMetricsSchema = joi.object({
+  data:joi.object({
+    totalSurveys: joi.number(),
+    surveysByStatus: joi.array(), // string
+    surveysByMonth: joi.array(), // string
+    message: joi.string(), // string
+    status: joi.number() 
   })
-  I.seeResponseValidByCallback(({ expect, data }) => {
-    expect(data.results.length).to.be.gte(10);
-  });
+}).unknown();
+
+Scenario('Requester - get survey by surveyId', ({ I }) => {
+
+  I.sendGetRequest('/requester/surveys/SRV1684921916359');
+  I.seeResponseCodeIsSuccessful();
+  I.seeResponseContainsKeys(['status', 'message','data']);
+  I.seeResponseMatchesJsonSchema(surveySchema);
 });
 
-Scenario('check the first character', ({ I }) => {
-  I.sendGetRequest('/people/1');
+
+Scenario('Requester - get all surveys', ({ I }) => {
+
+  I.sendGetRequest('/requester/surveys');
   I.seeResponseCodeIsSuccessful();
-  I.seeResponseContainsKeys(['name', 'films']);
-  I.seeResponseMatchesJsonSchema(characterSchema);
-  I.seeResponseContainsJson({
-    name: 'Luke Skywalker',
-    birth_year: "19BBY",
-    gender: "male",    
-  })  
+  I.seeResponseContainsKeys(['status', 'message','data']);
+  // I.seeResponseMatchesJsonSchema(surveySchema);
 });
+
+Scenario('Requester - get survey metrics', ({ I }) => {
+
+  I.sendGetRequest('/requester/metrics');
+  I.seeResponseCodeIsSuccessful();
+  I.seeResponseContainsKeys(['status', 'message','data']);
+  I.seeResponseMatchesJsonSchema(surveyMetricsSchema);
+});
+

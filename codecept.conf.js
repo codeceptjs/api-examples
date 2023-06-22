@@ -12,7 +12,7 @@ exports.config = {
   output: './output',
   helpers: {
     REST: {
-      endpoint: 'https://swapi.dev/api'
+      endpoint: 'http://localhost:8090'
     },
     JSONResponse: {},
   },
